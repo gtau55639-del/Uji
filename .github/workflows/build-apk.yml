@@ -16,6 +16,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Ekstrak ZIP otomatis (jika project masih berupa .zip)
+        run: |
+          if [ -z "$(find . -name settings.gradle.kts -not -path './.git/*' | head -1)" ]; then
+            for z in $(find . -maxdepth 2 -name '*.zip' -not -path './.git/*'); do
+              echo "Mengekstrak $z"
+              unzip -oq "$z" -d _extracted
+            done
+          fi
+
       - name: Cari folder project
         id: proj
         run: |
